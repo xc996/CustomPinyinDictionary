@@ -1,0 +1,36 @@
+# Python 缓存和编译文件
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python 虚拟环境
+.venv/
+env/
+venv/
+ENV/
+
+# OS 自动生成文件
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# 编辑器与 IDE 配置文件
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 下载和生成的临时词库文件
+scel/
+*.scel
+*.txt
+
+# 基础模板和打包产物
+CustomPinyinDictionary_Gboard_Magisk_Template/
+CustomPinyinDictionary_Gboard_Magisk_20260101/
+*.zip
+
+# 数据库备份文件
+*.bak
+*.db.bak
