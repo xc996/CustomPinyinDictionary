@@ -1,0 +1,58 @@
+name: Build Custom Dictionary
+
+on:
+  workflow_dispatch:
+    inputs:
+      keywords:
+        description: '搜索关键词，多个词用空格分隔 (如: 流行 上海)'
+        required: true
+        type: string
+        default: '流行'
+      max_len:
+        description: '保留词条的最大长度'
+        required: true
+        type: number
+        default: 5
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+          enable-cache: true
+          
+      - name: Install dependencies
+        run: |
+          uv venv
+          uv pip install requests
+          
+      - name: Build Dictionary Module
+        run: |
+          uv run scripts/build_action.py --keywords "${{ inputs.keywords }}" --max-len ${{ inputs.max_len }}
+          
+      - name: Generate Release Tag
+        id: tag
+        run: |
+          echo "tag=v$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+          
+      - name: Create Release and Upload Asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ steps.tag.outputs.tag }} CustomPinyinDictionary_Gboard_Magisk_Customized.zip \
+            --title "自定义词库构建 ${{ steps.tag.outputs.tag }}" \
+            --notes "### 自动构建词库模块
+            
+            - **搜索关键词**: \`${{ inputs.keywords }}\`
+            - **保留最大长度**: \`${{ inputs.max_len }}\`
+            
+            请在 Magisk/KernelSU/APatch 中刷入该模块。"
