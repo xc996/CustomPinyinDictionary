@@ -12,7 +12,7 @@ def ensure_base_template(target_dir, db_path):
     base_zip = "CustomPinyinDictionary_Gboard_Magisk_20260101.zip"
     if not os.path.exists(base_zip):
         try:
-            download_url = "https://github.com/xc996/CustomPinyinDictionary/releases/download/v20260101-Tools/CustomPinyinDictionary_Gboard_Magisk_20260101.zip"
+            download_url = "https://github.com/xc996/CustomPinyinDictionary/releases/download/assets/CustomPinyinDictionary_Gboard_Magisk_20260101.zip"
             subprocess.run(["curl", "-L", "-o", base_zip, download_url], check=True)
             print("✅ 基础包下载完成")
         except subprocess.CalledProcessError:
